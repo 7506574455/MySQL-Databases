@@ -9,7 +9,7 @@ use payroll_service;
 #created:table for employee_payroll
 
 create table employee_payroll(
-	id int unsigned not null auto_increment,
+	id int not null auto_increment,
     name varchar(30) not null,
     salary double not null,
     start date not null,
@@ -70,13 +70,49 @@ add taxable_pay int  ,
 add tax int,
 add net_pay int;
 
+delete from employee_payroll where id in (1,2,3,4,5,6);
+
 #Uc10
-insert into employee_payroll (name,department,gender,basic_pay
+insert into employee_payroll (name,department,gender,salary,basic_pay
 ,deductions,taxable_pay,tax,net_pay,start) values
-	('Terissa','Marketing','F',3000000,1000000,
+	('Terissa','Marketing','F',100000,3000000,1000000,
     2000000,500000,1500000,'2021-07-08');
     
-insert into employee_payroll (name,department,gender,basic_pay
+insert into employee_payroll (name,department,gender,salary,basic_pay
 ,deductions,taxable_pay,tax,net_pay,start) values
-	('Terissa','Sales','F',3000000,
+	('Terissa','Sales','F',900000,3000000,
     0,0,0,0,'2021-06-01');
+    
+    
+CREATE TABLE department (
+    did INT not null auto_increment,
+    dname VARCHAR(30) NOT NULL,
+    PRIMARY KEY (did)
+);
+insert into department (dname) values
+	('sales');
+insert into department (dname) values
+	('marketing');
+select * from  department;
+    
+drop table employee_payroll;
+ 
+CREATE TABLE emp_department(
+    dept_id int not null ,
+    emp_id int NOT NULL,
+    foreign key (emp_id) references employee_payroll(id),
+	foreign key (dept_id) references department(did),
+    primary key(dept_id,emp_id)
+);
+
+create table payroll(
+payroll_id int primary key not null auto_increment,
+basic_pay int,
+deductions int,
+taxable_pay int,
+tax int,
+net_pay int,
+emp_id int,
+foreign key (emp_id)  references employee_payroll(id)
+);
+   
